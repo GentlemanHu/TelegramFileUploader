@@ -39,8 +39,15 @@ async def main(client: TelegramClient, to: str, message: str, files: list[str]):
     print(f"Sending message")
     message_list = [None for i in range(len(uploaded_files) - 1)]
     message_list.append(message)
+
+    # 判断to参数类型
+    try:
+        entity = int(to)  # 尝试转换为整数
+    except ValueError:
+        entity = to  # 如果转换失败，则保持字符串类型
+
     await client.send_file(
-        entity=to, file=uploaded_files, caption=message_list, progress_callback=callback
+        entity=entity, file=uploaded_files, caption=message_list, progress_callback=callback
     )
     print(f"Sent message")
 
